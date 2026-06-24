@@ -1,0 +1,46 @@
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-800">Senarai Pengguna</h1>
+    <p class="text-slate-500"><%= senaraiPengguna.length %> pengguna dijumpai.</p>
+  </div>
+  <a href="/pengguna/create" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600">+ Daftar Pengguna</a>
+</div>
+
+<!-- Borang carian -->
+<form method="GET" action="/pengguna" class="bg-white rounded-lg shadow p-4 mb-6 flex flex-wrap gap-3 items-end">
+  <div class="flex-1 min-w-[200px]">
+    <label class="block text-sm text-slate-600 mb-1">Carian</label>
+    <input type="text" name="carian" value="<%= carian %>" placeholder="Nama atau e-mel"
+      class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+  <button type="submit" class="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-600">Cari</button>
+  <a href="/pengguna" class="text-slate-500 px-3 py-2 hover:underline">Set semula</a>
+</form>
+
+<!-- Jadual pengguna -->
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+  <% if (senaraiPengguna.length === 0) { %>
+    <p class="px-4 py-8 text-center text-slate-500">Tiada pengguna dijumpai.</p>
+  <% } else { %>
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 text-slate-500 text-left">
+        <tr>
+          <th class="px-4 py-3">Nama</th>
+          <th class="px-4 py-3">E-mel</th>
+          <th class="px-4 py-3 text-right">Tindakan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% senaraiPengguna.forEach(function (p) { %>
+          <tr class="border-t hover:bg-slate-50">
+            <td class="px-4 py-3 font-medium"><%= p.nama %></td>
+            <td class="px-4 py-3"><%= p.email %></td>
+            <td class="px-4 py-3 text-right">
+              <a href="/pengguna/<%= p.id %>" class="text-blue-700 hover:underline">Lihat</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

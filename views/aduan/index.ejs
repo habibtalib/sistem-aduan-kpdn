@@ -1,0 +1,52 @@
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-800">Senarai Aduan</h1>
+    <p class="text-slate-500"><%= senaraiAduan.length %> aduan dijumpai.</p>
+  </div>
+  <a href="/aduan/create" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600">+ Daftar Aduan</a>
+</div>
+
+<!-- Borang carian -->
+<form method="GET" action="/aduan" class="bg-white rounded-lg shadow p-4 mb-6 flex flex-wrap gap-3 items-end">
+  <div class="flex-1 min-w-[200px]">
+    <label class="block text-sm text-slate-600 mb-1">Carian</label>
+    <input type="text" name="carian" value="<%= carian %>" placeholder="Nama, no. aduan, atau premis"
+      class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+  <button type="submit" class="bg-slate-700 text-white px-4 py-2 rounded hover:bg-slate-600">Cari</button>
+  <a href="/aduan" class="text-slate-500 px-3 py-2 hover:underline">Set semula</a>
+</form>
+
+<!-- Jadual aduan -->
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+  <% if (senaraiAduan.length === 0) { %>
+    <p class="px-4 py-8 text-center text-slate-500">Tiada aduan dijumpai.</p>
+  <% } else { %>
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 text-slate-500 text-left">
+        <tr>
+          <th class="px-4 py-3">No. Aduan</th>
+          <th class="px-4 py-3">Pengadu</th>
+          <th class="px-4 py-3">Kategori</th>
+          <th class="px-4 py-3">Premis</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3 text-right">Tindakan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% senaraiAduan.forEach(function (a) { %>
+          <tr class="border-t hover:bg-slate-50">
+            <td class="px-4 py-3 font-mono"><%= a.noAduan %></td>
+            <td class="px-4 py-3"><%= a.namaPengadu %></td>
+            <td class="px-4 py-3"><%= a.kategori %></td>
+            <td class="px-4 py-3"><%= a.premis %></td>
+            <td class="px-4 py-3"><%- include('../partials/status', { status: a.status }) %></td>
+            <td class="px-4 py-3 text-right">
+              <a href="/aduan/<%= a.id %>" class="text-blue-700 hover:underline">Lihat</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

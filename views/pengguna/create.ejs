@@ -1,0 +1,40 @@
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-slate-800">Daftar Pengguna Baru</h1>
+  <p class="text-slate-500">Isi maklumat pengguna di bawah.</p>
+</div>
+
+<!-- Papar ralat validasi jika ada -->
+<% if (ralat) { %>
+  <div class="mb-4 rounded border border-red-300 bg-red-50 text-red-800 px-4 py-3">
+    <p class="font-semibold mb-1">Sila betulkan ralat berikut:</p>
+    <ul class="list-disc list-inside text-sm">
+      <% ralat.forEach(function (r) { %><li><%= r %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<form method="POST" action="/pengguna" class="bg-white rounded-lg shadow p-6 space-y-4">
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Nama <span class="text-red-500">*</span></label>
+    <input type="text" name="nama" value="<%= nilai.nama || '' %>"
+      class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">E-mel <span class="text-red-500">*</span></label>
+    <input type="email" name="email" value="<%= nilai.email || '' %>" placeholder="cth: pengguna@contoh.com"
+      class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Kata Laluan <span class="text-red-500">*</span></label>
+    <input type="password" name="password"
+      class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+
+  <div class="flex gap-2 pt-2">
+    <button type="submit" class="bg-blue-700 text-white px-5 py-2 rounded hover:bg-blue-600">Daftar Pengguna</button>
+    <a href="/pengguna" class="px-5 py-2 rounded border border-slate-300 hover:bg-slate-50">Batal</a>
+  </div>
+</form>
