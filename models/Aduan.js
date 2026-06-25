@@ -16,6 +16,9 @@ const KATEGORI = [
 // Senarai status aduan mengikut aliran kerja siasatan.
 const STATUS = ["Baru", "Dalam Siasatan", "Selesai", "Ditolak"];
 
+// Senarai tahap prioriti aduan (gunakan semula dalam borang & validasi).
+const PRIORITI = ["Rendah", "Sederhana", "Tinggi"];
+
 const aduanSchema = new mongoose.Schema(
   {
     // Nombor rujukan aduan, contoh: ADN-2026-0001. Dijana automatik (lihat hook di bawah).
@@ -77,6 +80,14 @@ const aduanSchema = new mongoose.Schema(
       enum: STATUS,
       default: "Baru",
     },
+    prioriti: {
+      type: String,
+      enum: {
+        values: PRIORITI,
+        message: 'Prioriti "{VALUE}" tidak sah',
+      },
+      default: "Sederhana",
+    },
   },
   {
     // Tambah medan createdAt & updatedAt secara automatik.
@@ -104,3 +115,4 @@ aduanSchema.pre("save", async function (next) {
 module.exports = mongoose.model("Aduan", aduanSchema);
 module.exports.KATEGORI = KATEGORI;
 module.exports.STATUS = STATUS;
+module.exports.PRIORITI = PRIORITI;

@@ -53,6 +53,14 @@
       <input type="text" name="premis" value="<%= nilai.premis || '' %>"
         class="w-full border border-slate-300 rounded px-3 py-2" />
     </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Prioriti</label>
+      <select name="prioriti" class="w-full border border-slate-300 rounded px-3 py-2">
+        <% PRIORITI.forEach(function (p) { %>
+          <option value="<%= p %>" <%= (nilai.prioriti || 'Sederhana') === p ? 'selected' : '' %>><%= p %></option>
+        <% }) %>
+      </select>
+    </div>
   </div>
 
   <div>

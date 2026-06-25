@@ -36,6 +36,7 @@ exports.create = (req, res) => {
   res.render("aduan/create", {
     title: "Daftar Aduan Baru",
     KATEGORI: Aduan.KATEGORI,
+    PRIORITI: Aduan.PRIORITI,
     nilai: {},
     ralat: null,
   });
@@ -58,6 +59,7 @@ exports.store = async (req, res) => {
     res.status(400).render("aduan/create", {
       title: "Daftar Aduan Baru",
       KATEGORI: Aduan.KATEGORI,
+      PRIORITI: Aduan.PRIORITI,
       nilai: req.body,
       ralat,
     });
@@ -104,6 +106,7 @@ exports.edit = async (req, res) => {
     aduan,
     KATEGORI: Aduan.KATEGORI,
     STATUS: Aduan.STATUS,
+    PRIORITI: Aduan.PRIORITI,
     ralat: null,
   });
 };
@@ -132,6 +135,7 @@ exports.update = async (req, res) => {
       aduan: { ...aduan.toObject(), ...req.body, id: aduan.id },
       KATEGORI: Aduan.KATEGORI,
       STATUS: Aduan.STATUS,
+      PRIORITI: Aduan.PRIORITI,
       ralat: ambilRalat(error),
     });
   }
