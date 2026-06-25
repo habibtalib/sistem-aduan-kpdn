@@ -15,6 +15,7 @@ const passport = require("./config/passport");
 const connectDB = require("./config/db");
 const webRoutes = require("./routes/web");
 const apiRoutes = require("./routes/api");
+const { notFound, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -59,26 +60,20 @@ app.use((req, res, next) => {
 app.use("/", webRoutes);
 app.use("/api", apiRoutes);
 
-// 7) Halaman 404 (tiada laluan padan).
-app.use((req, res) => {
-  res
-    .status(404)
-    .render("404", { title: "Halaman Tidak Dijumpai", layout: "layout" });
-});
-
-// 7b) Pengendali ralat — termasuk ralat muat naik fail (multer).
-//     Mesti ada 4 parameter (err, req, res, next).
-app.use((err, req, res, next) => {
-  console.error("❌ Ralat:", err.message);
-  // Untuk ralat muat naik, kembali ke halaman sebelumnya dengan mesej.
-  if (req.flash) {
-    req.flash("gagal", err.message || "Ralat tidak dijangka.");
-    return res.redirect(req.get("Referrer") || "/");
-  }
-  res.status(500).send("Ralat pelayan: " + err.message);
-});
+// 7) Pengendali ralat — mesti PALING AKHIR selepas semua laluan.
+app.use(notFound);       // 404: tiada laluan padan
+app.use(errorHandler);   // 500: ralat tidak dijangka (4 parameter)
 
 // 8) Mulakan pelayan.
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Pelayan berjalan di http://localhost:${PORT}`);
+});
+
+// 9) Graceful shutdown: tunggu request semasa selesai sebelum tutup.
+process.on("SIGTERM", () => {
+  console.log("⚠️  SIGTERM diterima. Menutup pelayan...");
+  server.close(() => {
+    console.log("✅ Pelayan ditutup dengan selamat.");
+    process.exit(0);
+  });
 });
