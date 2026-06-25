@@ -11,6 +11,9 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("./config/passport");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
 
 const connectDB = require("./config/db");
 const webRoutes = require("./routes/web");
@@ -29,13 +32,31 @@ app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 app.set("layout", "layout"); // views/layout.ejs sebagai rangka utama
 
-// 4) Middleware terbina dalam.
+// 4) Keselamatan.
+// CSP dimatikan kerana Tailwind CSS dimuatkan dari CDN (cdn.tailwindcss.com).
+// Untuk produksi: aktifkan semula CSP dan senaraikan domain CDN dalam scriptSrc/styleSrc.
+app.use(helmet({ contentSecurityPolicy: false }));
+
+// Buang aksara '$' dan '.' dari input untuk halang suntikan operator MongoDB.
+app.use(mongoSanitize());
+
+// Had cubaan log masuk: maksimum 10 percubaan setiap 15 minit bagi satu IP.
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: "Terlalu banyak cubaan log masuk. Sila cuba lagi selepas 15 minit.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use("/login", loginLimiter);
+
+// 5) Middleware terbina dalam.
 app.use(express.urlencoded({ extended: true })); // baca data borang (req.body)
 app.use(express.json()); // baca JSON (untuk REST API)
 app.use(express.static(path.join(__dirname, "public"))); // fail statik (css, imej)
 app.use(methodOverride("_method")); // benarkan borang hantar PUT/DELETE
 
-// 5) Sesi & flash message (mesej sekali papar selepas redirect).
+// 6) Sesi & flash message (mesej sekali papar selepas redirect).
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "rahsia-kpdn",
@@ -56,20 +77,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// 6) Daftarkan laluan.
+// 7) Daftarkan laluan.
 app.use("/", webRoutes);
 app.use("/api", apiRoutes);
 
-// 7) Pengendali ralat — mesti PALING AKHIR selepas semua laluan.
+// 8) Pengendali ralat — mesti PALING AKHIR selepas semua laluan.
 app.use(notFound);       // 404: tiada laluan padan
 app.use(errorHandler);   // 500: ralat tidak dijangka (4 parameter)
 
-// 8) Mulakan pelayan.
+// 9) Mulakan pelayan.
 const server = app.listen(PORT, () => {
   console.log(`🚀 Pelayan berjalan di http://localhost:${PORT}`);
 });
 
-// 9) Graceful shutdown: tunggu request semasa selesai sebelum tutup.
+// 10) Graceful shutdown: tunggu request semasa selesai sebelum tutup.
 process.on("SIGTERM", () => {
   console.log("⚠️  SIGTERM diterima. Menutup pelayan...");
   server.close(() => {
