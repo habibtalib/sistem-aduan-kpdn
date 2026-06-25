@@ -10,6 +10,7 @@ const expressLayouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("./config/passport");
 
 const connectDB = require("./config/db");
 const webRoutes = require("./routes/web");
@@ -42,6 +43,8 @@ app.use(
   }),
 );
 app.use(flash());
+app.use(passport.initialize()); // mulakan Passport
+app.use(passport.session()); // sambungkan Passport ke sesi Express
 
 // Jadikan mesej flash & laluan semasa tersedia di semua paparan EJS.
 app.use((req, res, next) => {
