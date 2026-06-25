@@ -28,6 +28,7 @@ router.post("/aduan", requireLogin, aduan.store); //           Simpan aduan baru
 router.get("/aduan/:id", aduan.show); //                       Papar satu aduan (awam)
 router.get("/aduan/:id/edit", requireLogin, aduan.edit); //    Borang kemaskini
 router.put("/aduan/:id", requireLogin, aduan.update); //       Kemaskini aduan
+router.delete("/aduan/:id", requireLogin, aduan.destroy); //    Padam aduan
 
 // Pengurusan Pengguna — perlu log masuk.
 router.get("/pengguna", requireLogin, pengguna.index); //         Senarai semua pengguna

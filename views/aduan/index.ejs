@@ -3,7 +3,9 @@
     <h1 class="text-2xl font-bold text-slate-800">Senarai Aduan</h1>
     <p class="text-slate-500"><%= senaraiAduan.length %> aduan dijumpai.</p>
   </div>
-  <a href="/aduan/create" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600">+ Daftar Aduan</a>
+  <% if (currentUser) { %>
+    <a href="/aduan/create" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600">+ Daftar Aduan</a>
+  <% } %>
 </div>
 
 <!-- Borang carian -->

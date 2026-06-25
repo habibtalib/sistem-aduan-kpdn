@@ -46,11 +46,12 @@ app.use(flash());
 app.use(passport.initialize()); // mulakan Passport
 app.use(passport.session()); // sambungkan Passport ke sesi Express
 
-// Jadikan mesej flash & laluan semasa tersedia di semua paparan EJS.
+// Jadikan mesej flash, laluan semasa & pengguna log masuk tersedia di semua paparan EJS.
 app.use((req, res, next) => {
   res.locals.jaya = req.flash("jaya");
   res.locals.gagal = req.flash("gagal");
   res.locals.currentPath = req.path;
+  res.locals.currentUser = req.user || null; // Passport letak pengguna dalam req.user
   next();
 });
 

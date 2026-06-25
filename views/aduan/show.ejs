@@ -3,7 +3,18 @@
     <h1 class="text-2xl font-bold text-slate-800 font-mono"><%= aduan.noAduan %></h1>
     <p class="text-slate-500">Didaftarkan pada <%= aduan.createdAt.toLocaleString('ms-MY') %></p>
   </div>
-  <%- include('../partials/status', { status: aduan.status }) %>
+  <div class="flex items-center gap-2">
+    <%- include('../partials/status', { status: aduan.status }) %>
+    <% if (currentUser) { %>
+      <a href="/aduan/<%= aduan.id %>/edit"
+        class="px-3 py-1.5 rounded border border-slate-300 text-sm hover:bg-slate-50">Edit</a>
+      <form method="POST" action="/aduan/<%= aduan.id %>?_method=DELETE"
+        onsubmit="return confirm('Padam aduan ini?')">
+        <button type="submit"
+          class="px-3 py-1.5 rounded border border-red-300 text-red-600 text-sm hover:bg-red-50">Padam</button>
+      </form>
+    <% } %>
+  </div>
 </div>
 
 <div class="bg-white rounded-lg shadow p-6 space-y-4">

@@ -8,7 +8,19 @@
       <a href="/" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath === '/' ? 'bg-blue-700' : '' %>">Papan Pemuka</a>
       <a href="/analitik" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath === '/analitik' ? 'bg-blue-700' : '' %>">Analitik</a>
       <a href="/aduan" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath.startsWith('/aduan') && currentPath !== '/aduan/create' ? 'bg-blue-700' : '' %>">Senarai Aduan</a>
-      <a href="/aduan/create" class="px-3 py-2 rounded bg-amber-400 text-slate-900 font-semibold hover:bg-amber-300">+ Daftar Aduan</a>
+
+      <% if (currentUser) { %>
+        <a href="/aduan/create" class="px-3 py-2 rounded bg-amber-400 text-slate-900 font-semibold hover:bg-amber-300">+ Daftar Aduan</a>
+
+        <div class="ml-3 pl-3 border-l border-blue-600 flex items-center gap-2">
+          <span class="text-blue-200 text-xs">Hai, <strong class="text-white"><%= currentUser.nama %></strong></span>
+          <form method="POST" action="/logout">
+            <button type="submit" class="px-3 py-1.5 rounded bg-blue-900 hover:bg-blue-700 text-xs">Log Keluar</button>
+          </form>
+        </div>
+      <% } else { %>
+        <a href="/login" class="ml-2 px-3 py-1.5 rounded border border-blue-400 hover:bg-blue-700 text-xs">Log Masuk</a>
+      <% } %>
     </div>
   </div>
 </nav>
