@@ -21,13 +21,13 @@ router.get("/login", requireGuest, auth.showLogin); // Borang log masuk
 router.post("/login", requireGuest, auth.login); //    Proses log masuk
 router.post("/logout", auth.logout); //                Log keluar
 
-// CRUD Aduan — Hari 2 (Cipta & Baca sahaja). Awam boleh hantar aduan.
-router.get("/aduan", aduan.index); //         Senarai semua aduan
-router.get("/aduan/create", aduan.create); //  Borang daftar (mesti sebelum /aduan/:id)
-router.post("/aduan", aduan.store); //         Simpan aduan baru
-router.get("/aduan/:id", aduan.show); //       Papar satu aduan
-router.get("/aduan/:id/edit", aduan.edit); //   Borang kemaskini
-router.put("/aduan/:id", aduan.update); //      Kemaskini aduan
+// CRUD Aduan — awam: senarai & papar. perlu log masuk: cipta, simpan, edit, kemaskini.
+router.get("/aduan", aduan.index); //                          Senarai (awam)
+router.get("/aduan/create", requireLogin, aduan.create); //    Borang cipta
+router.post("/aduan", requireLogin, aduan.store); //           Simpan aduan baru
+router.get("/aduan/:id", aduan.show); //                       Papar satu aduan (awam)
+router.get("/aduan/:id/edit", requireLogin, aduan.edit); //    Borang kemaskini
+router.put("/aduan/:id", requireLogin, aduan.update); //       Kemaskini aduan
 
 // Pengurusan Pengguna — perlu log masuk.
 router.get("/pengguna", requireLogin, pengguna.index); //         Senarai semua pengguna

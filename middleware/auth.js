@@ -1,18 +1,14 @@
 // middleware/auth.js
-// Middleware untuk melindungi laluan yang memerlukan log masuk.
+// Middleware untuk melindungi laluan yang memerlukan log masuk (Passport).
 
-// Hanya benarkan jika sesi mempunyai pengguna yang telah log masuk.
+// Hanya benarkan jika pengguna telah disahkan oleh Passport.
 exports.requireLogin = (req, res, next) => {
-  if (req.session && req.session.user) {
-    return next();
-  }
-  return res.redirect("/login");
+  if (req.isAuthenticated()) return next();
+  res.redirect("/login");
 };
 
 // Sebaliknya: halang pengguna yang SUDAH log masuk daripada melihat halaman log masuk.
 exports.requireGuest = (req, res, next) => {
-  if (req.session && req.session.user) {
-    return res.redirect("/pengguna");
-  }
-  return next();
+  if (req.isAuthenticated()) return res.redirect("/aduan");
+  next();
 };

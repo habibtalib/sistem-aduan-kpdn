@@ -1,0 +1,35 @@
+<div class="max-w-md mx-auto">
+  <div class="mb-6 text-center">
+    <h1 class="text-2xl font-bold text-slate-800">Log Masuk</h1>
+    <p class="text-slate-500">Masuk untuk mengurus sistem aduan.</p>
+  </div>
+
+  <% if (ralat) { %>
+    <div class="mb-4 rounded border border-red-300 bg-red-50 text-red-800 px-4 py-3 text-sm">
+      <%= ralat %>
+    </div>
+  <% } %>
+
+  <form method="POST" action="/login" class="bg-white rounded-lg shadow p-6 space-y-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        Username <span class="text-red-500">*</span>
+      </label>
+      <input type="text" name="username" autofocus
+        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        Kata Laluan <span class="text-red-500">*</span>
+      </label>
+      <input type="password" name="password"
+        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <button type="submit"
+      class="w-full bg-blue-700 text-white px-5 py-2 rounded hover:bg-blue-600 transition-colors">
+      Log Masuk
+    </button>
+  </form>
+</div>

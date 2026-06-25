@@ -1,57 +1,27 @@
 // controllers/authController.js
-// Mengawal aliran log masuk & log keluar pengguna sistem.
+// Mengawal aliran log masuk & log keluar menggunakan Passport.js.
 
-const Pengguna = require("../models/Pengguna");
+const passport = require("../config/passport");
 
-// Papar borang log masuk.
+// Papar borang log masuk. Ralat dari Passport diambil melalui flash 'error'.
 exports.showLogin = (req, res) => {
-  res.render("auth/login", {
+  res.render("login", {
     title: "Log Masuk",
-    nilai: {},
-    ralat: null,
+    ralat: req.flash("error")[0] || null,
   });
 };
 
-// Proses log masuk.
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
+// Proses log masuk — Passport uruskan semak kata laluan & sesi secara automatik.
+exports.login = passport.authenticate("local", {
+  successRedirect: "/aduan",
+  failureRedirect: "/login",
+  failureFlash: true, // hantar mesej ralat ke req.flash('error')
+});
 
-  try {
-    // Kata laluan disembunyikan secara lalai (select:false), jadi minta secara eksplisit.
-    const pengguna = await Pengguna.findOne({ email: (email || "").toLowerCase() }).select(
-      "+password"
-    );
-
-    // Gunakan mesej am yang sama untuk e-mel/kata laluan salah (elak bocor maklumat).
-    if (!pengguna || !(await pengguna.comparePassword(password || ""))) {
-      return res.status(401).render("auth/login", {
-        title: "Log Masuk",
-        nilai: { email },
-        ralat: "E-mel atau kata laluan tidak sah.",
-      });
-    }
-
-    // Simpan maklumat ringkas pengguna dalam sesi (tanpa kata laluan).
-    req.session.user = {
-      id: pengguna.id,
-      nama: pengguna.nama,
-      email: pengguna.email,
-    };
-
-    res.redirect("/pengguna");
-  } catch (error) {
-    res.status(500).render("auth/login", {
-      title: "Log Masuk",
-      nilai: { email },
-      ralat: "Ralat pelayan. Sila cuba lagi.",
-    });
-  }
-};
-
-// Log keluar: musnahkan sesi.
-exports.logout = (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("connect.sid");
+// Log keluar: Passport buang maklumat pengguna dari sesi.
+exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
     res.redirect("/login");
   });
 };
