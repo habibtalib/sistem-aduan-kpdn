@@ -3,7 +3,7 @@
 // Kemaskini (Update) dan Padam (Delete) akan ditambah pada Hari 3.
 
 const Aduan = require("../models/Aduan");
-const Tindakan = require("../models/Tindakans");
+const Tindakan = require("../models/Tindakan");
 
 /**
  * Papar senarai semua aduan, dengan sokongan carian.

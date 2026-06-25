@@ -2,7 +2,7 @@
 // Logik untuk tindakan susulan (catatan siasatan) bagi sesuatu aduan.
 
 const Aduan = require("../models/Aduan");
-const Tindakan = require("../models/Tindakans");
+const Tindakan = require("../models/Tindakan");
 
 /**
  * Rekod satu tindakan baharu untuk satu aduan.
