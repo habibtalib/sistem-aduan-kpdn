@@ -5,6 +5,14 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const Aduan = require("./models/Aduan");
+const Pengguna = require("./models/Pengguna");
+
+// Pengguna pentadbir lalai untuk log masuk (kata laluan di-hash oleh model).
+const penggunaPentadbir = {
+  nama: "Pentadbir KPDN",
+  email: "admin@kpdn.gov.my",
+  password: "kata123",
+};
 
 const dataContoh = [
   {
@@ -71,6 +79,13 @@ async function seed() {
     }
 
     console.log(`✅ ${dataContoh.length} aduan contoh berjaya dimasukkan.`);
+
+    // Cipta semula pengguna pentadbir lalai (gunakan .create supaya hook hash berjalan).
+    await Pengguna.deleteMany({});
+    await Pengguna.create(penggunaPentadbir);
+    console.log(
+      `✅ Pengguna pentadbir: ${penggunaPentadbir.email} / ${penggunaPentadbir.password}`
+    );
   } catch (error) {
     console.error("❌ Ralat semasa seed:", error.message);
   } finally {

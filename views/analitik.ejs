@@ -1,0 +1,45 @@
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-slate-800">Analitik Aduan</h1>
+  <p class="text-slate-500">Visualisasi data menggunakan MongoDB aggregation + Chart.js.</p>
+</div>
+
+<div class="grid lg:grid-cols-2 gap-6">
+  <div class="bg-white rounded-lg shadow p-5">
+    <h2 class="font-semibold mb-3">Aduan Mengikut Kategori</h2>
+    <canvas id="cartaKategori"></canvas>
+  </div>
+  <div class="bg-white rounded-lg shadow p-5">
+    <h2 class="font-semibold mb-3">Trend Aduan Mengikut Bulan</h2>
+    <canvas id="cartaBulan"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js melalui CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  // Data dari pelayan (hasil aggregation) disuntik sebagai JSON.
+  const kategoriLabel = <%- JSON.stringify(kategoriLabel) %>;
+  const kategoriData  = <%- JSON.stringify(kategoriData) %>;
+  const bulanLabel    = <%- JSON.stringify(bulanLabel) %>;
+  const bulanData     = <%- JSON.stringify(bulanData) %>;
+
+  // Carta bar: aduan mengikut kategori
+  new Chart(document.getElementById('cartaKategori'), {
+    type: 'bar',
+    data: {
+      labels: kategoriLabel,
+      datasets: [{ label: 'Bilangan Aduan', data: kategoriData, backgroundColor: '#2563eb' }],
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+  });
+
+  // Carta garis: trend mengikut bulan
+  new Chart(document.getElementById('cartaBulan'), {
+    type: 'line',
+    data: {
+      labels: bulanLabel,
+      datasets: [{ label: 'Bilangan Aduan', data: bulanData, borderColor: '#0f766e', tension: 0.3, fill: false }],
+    },
+    options: { scales: { y: { beginAtZero: true } } },
+  });
+</script>

@@ -26,11 +26,13 @@ const aduanSchema = new mongoose.Schema(
     namaPengadu: {
       type: String,
       required: [true, "Nama pengadu wajib diisi"],
+      maxlength: [100, "Nama pengadu tidak boleh melebihi 100 aksara"],
       trim: true,
     },
     noIc: {
-      type: String,
+      type: Number,
       required: [true, "No. kad pengenalan wajib diisi"],
+      maxlength: [12, "No. kad pengenalan tidak boleh melebihi 12 digit"],
       trim: true,
     },
     telefon: {
@@ -50,6 +52,10 @@ const aduanSchema = new mongoose.Schema(
         values: KATEGORI,
         message: 'Kategori "{VALUE}" tidak sah',
       },
+    },
+    lampiran: {
+      type: [String],
+      default: [],
     },
     premis: {
       type: String,

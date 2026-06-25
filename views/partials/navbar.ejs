@@ -5,9 +5,9 @@
       <span>Sistem Aduan Pengguna</span>
     </a>
     <div class="flex items-center gap-1 text-sm">
-      <a href="/" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath === '/' ? 'bg-blue-700' : '' %>">Utama</a>
+      <a href="/" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath === '/' ? 'bg-blue-700' : '' %>">Papan Pemuka</a>
+      <a href="/analitik" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath === '/analitik' ? 'bg-blue-700' : '' %>">Analitik</a>
       <a href="/aduan" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath.startsWith('/aduan') && currentPath !== '/aduan/create' ? 'bg-blue-700' : '' %>">Senarai Aduan</a>
-      <a href="/pengguna" class="px-3 py-2 rounded hover:bg-blue-700 <%= currentPath.startsWith('/pengguna') && currentPath !== '/pengguna/create' ? 'bg-blue-700' : '' %>">Pengguna</a>
       <a href="/aduan/create" class="px-3 py-2 rounded bg-amber-400 text-slate-900 font-semibold hover:bg-amber-300">+ Daftar Aduan</a>
     </div>
   </div>

@@ -1,0 +1,82 @@
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-slate-800">Kemaskini Aduan</h1>
+  <p class="text-slate-500 font-mono"><%= aduan.noAduan %></p>
+</div>
+
+<% if (ralat) { %>
+  <div class="mb-4 rounded border border-red-300 bg-red-50 text-red-800 px-4 py-3">
+    <p class="font-semibold mb-1">Sila betulkan ralat berikut:</p>
+    <ul class="list-disc list-inside text-sm">
+      <% ralat.forEach(function (r) { %><li><%= r %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<!-- method-override: borang HTML hanya sokong GET/POST, jadi kita "tukar" POST kepada PUT -->
+<form method="POST" action="/aduan/<%= aduan.id %>?_method=PUT" class="bg-white rounded-lg shadow p-6 space-y-4">
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">Nama Pengadu <span class="text-red-500">*</span></label>
+      <input type="text" name="namaPengadu" value="<%= aduan.namaPengadu %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">No. Kad Pengenalan <span class="text-red-500">*</span></label>
+      <input type="text" name="noIc" value="<%= aduan.noIc %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">No. Telefon <span class="text-red-500">*</span></label>
+      <input type="text" name="telefon" value="<%= aduan.telefon %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">E-mel</label>
+      <input type="email" name="email" value="<%= aduan.email || '' %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">Kategori Aduan <span class="text-red-500">*</span></label>
+      <select name="kategori" class="w-full border border-slate-300 rounded px-3 py-2">
+        <% KATEGORI.forEach(function (k) { %>
+          <option value="<%= k %>" <%= aduan.kategori === k ? 'selected' : '' %>><%= k %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Status <span class="text-red-500">*</span></label>
+      <select name="status" class="w-full border border-slate-300 rounded px-3 py-2">
+        <% STATUS.forEach(function (s) { %>
+          <option value="<%= s %>" <%= aduan.status === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">Nama Premis / Perniagaan <span class="text-red-500">*</span></label>
+      <input type="text" name="premis" value="<%= aduan.premis %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Lokasi Premis <span class="text-red-500">*</span></label>
+      <input type="text" name="lokasi" value="<%= aduan.lokasi %>"
+        class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Butiran Aduan <span class="text-red-500">*</span></label>
+    <textarea name="butiran" rows="4" class="w-full border border-slate-300 rounded px-3 py-2"><%= aduan.butiran %></textarea>
+  </div>
+
+  <div class="flex gap-2 pt-2">
+    <button type="submit" class="bg-blue-700 text-white px-5 py-2 rounded hover:bg-blue-600">Simpan Perubahan</button>
+    <a href="/aduan/<%= aduan.id %>" class="px-5 py-2 rounded border border-slate-300 hover:bg-slate-50">Batal</a>
+  </div>
+</form>
